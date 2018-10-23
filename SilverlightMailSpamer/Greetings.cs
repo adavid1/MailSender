@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MailSender
 {
     class Greetings
     {
-        public static string GetGreetingsEN(int greetingsKey, string genderKey, string firstname, string lastname)
+        public static string GetGreetingsDefault(int greetingsKey, string genderKey, string firstname, string lastname)
         {
             string sGreetings;
 
@@ -35,60 +36,41 @@ namespace MailSender
             return sGreetings;
         }
 
-
-        public static string GetGreetingsFR(int greetingsKey, string genderKey, string firstname, string lastname)
+        public static string GetGreetingsCustom(int greetingsKey, string genderKey, string firstname, string lastname, string greetingLanguage)
         {
-            string sGreetings;
-
-            if (greetingsKey == 1) //Europe & world (Dear M. lastname) 
+            string sGreetings = "";
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Manager.m_folderPath + "GreetingsList.xml");
+            
+            foreach (XmlNode rootNode in doc.DocumentElement.ChildNodes)
             {
-                if (genderKey == "1")
+                if (rootNode.Attributes.GetNamedItem("name").Value.ToString() == greetingLanguage ) //or loop through its children as well
                 {
-                    sGreetings = "Cher Mr " + lastname;
-                }
-                else if (genderKey == "2")
-                {
-                    sGreetings = "Chère Mme " + lastname;
-                }
-                else
-                {
-                    sGreetings = "Cher M. " + lastname;
+                    foreach (XmlNode languageNode in rootNode.ChildNodes)
+                    {
+                        if (genderKey == "1" && languageNode.Name == "Male" || genderKey == "2" && languageNode.Name == "Female")
+                        {
+                            sGreetings = languageNode.InnerText;
+                            sGreetings.TrimStart();
+                            sGreetings.TrimEnd();
+                            sGreetings = sGreetings + " " + lastname;
+                            return sGreetings;
+                        }
+                        else
+                        {
+                            if (languageNode.Name == "Default")
+                            {
+                                sGreetings = languageNode.InnerText;
+                                sGreetings.TrimStart();
+                                sGreetings.TrimEnd();
+                                sGreetings = sGreetings + " " + firstname;
+                                return sGreetings;
+                            }
+                        }
+                    }
                 }
             }
-            else //UK & US (Dear firstname)
-            {
-                sGreetings = "Cher " + firstname;
-            }
-
-            return sGreetings;
-        }
-
-
-        public static string GetGreetingsDE(int greetingsKey, string genderKey, string firstname, string lastname)
-        {
-            string sGreetings;
-
-            if (greetingsKey == 1) //Europe & world (Dear M. lastname) 
-            {
-                if (genderKey == "1")
-                {
-                    sGreetings = "Lieber Herr " + lastname;
-                }
-                else if (genderKey == "2")
-                {
-                    sGreetings = "Liebe Frau " + lastname;
-                }
-                else
-                {
-                    sGreetings = "Sehr geehrte Damen und Herren " + lastname;
-                }
-            }
-            else //UK & US (Dear firstname)
-            {
-                sGreetings = "Lieber " + firstname;
-            }
-
-            return sGreetings;
+            return "";
         }
     }
 }

@@ -16,7 +16,7 @@ namespace MailSender
                 Outlook.MailItem mail = (Outlook.MailItem)_app.CreateItem(Outlook.OlItemType.olMailItem);
                 mail.To = recipientMail;
                 mail.Subject = mailSubject;
-                mail.HTMLBody = String.Format("<html><body style='font-size:10.0pt'><p><font face=\"calibri\"> " + Greetings.GetGreetingsEN(greetings, gender, recipientFirstname, recipientLastname) + "," +
+                mail.HTMLBody = String.Format("<html><body style='font-size:10.0pt'><p><font face=\"calibri\"> " + Greetings.GetGreetingsDefault(greetings, gender, recipientFirstname, recipientLastname) + "," +
                                               "<br> I hope you are well. </p>" +
                                               "<p> I am writing to you from Silverlight Research, a consultancy firm based in central London. We are currently working on a project in your field of expertise and would be keen to speak for a 5 minute call today if possible. We are working with a client who would be very interested to be introduced to you for a short call 30 minutes-1 hour maximum to talk about " + topic + ".  Given your experience in this field we would be really keen to organise a short introduction call.<p>" +
                                               "<p> Please could you let me know the number to reach you and let me know what time works to discuss this briefly. </p>" +
@@ -41,7 +41,7 @@ namespace MailSender
                 Outlook.MailItem mail = (Outlook.MailItem)_app.CreateItem(Outlook.OlItemType.olMailItem);
                 mail.To = recipientMail;
                 mail.Subject = mailSubject;
-                mail.HTMLBody = String.Format("<html><body style='font-size:10.0pt'><p><font face=\"calibri\"> " + Greetings.GetGreetingsEN(greetings, gender, recipientFirstname, recipientLastname) + "," +
+                mail.HTMLBody = String.Format("<html><body style='font-size:10.0pt'><p><font face=\"calibri\"> " + Greetings.GetGreetingsDefault(greetings, gender, recipientFirstname, recipientLastname) + "," +
                                               "<br> I hope you are well. </p>" +
                                               "<p> I wanted to reach out and would be very interested to arrange a short call to learn more about your work at " + companyName + " as well as introduce what we do at Silverlight Research. We are a Specialist Knowledge Research house and Expert Network based in London. Silverlight research is run by ex-investment bankers from Morgan Stanley and our value add versus other providers is a highly detailed and bespoke yet cost efficient service. We work primarily with large investment and consulting firms, but do not currently work with your team. <p>" +
                                               "<p> Please could we arrange a call? We would be very interested in exploring how our services may be useful for you. I look forward to speaking. </p>" +
@@ -159,17 +159,20 @@ namespace MailSender
 
         public static string AddCustomGreetings(string body, int greetingsKey, string genderKey, string firstname, string lastname)
         {
-            if (body.Contains("[greetings-en]"))
+            string greetingLanguague;
+
+            if (body.Contains("[greetings-"))
             {
-                return body.Replace("[greetings-en]", Greetings.GetGreetingsEN(greetingsKey, genderKey, firstname, lastname));
-            }
-            else if (body.Contains("[greetings-de]"))
-            {
-                return body.Replace("[greetings-de]", Greetings.GetGreetingsDE(greetingsKey, genderKey, firstname, lastname));
-            }
-            else if (body.Contains("[greetings-fr]"))
-            {
-                return body.Replace("[greetings-fr]", Greetings.GetGreetingsFR(greetingsKey, genderKey, firstname, lastname));
+                greetingLanguague = "greetings-" + body.Substring(body.IndexOf("-") + 1, ((body.IndexOf("]") - body.IndexOf("-")) - 1));
+                if (Greetings.GetGreetingsCustom(greetingsKey, genderKey, firstname, lastname, greetingLanguague) == "")
+                {
+                    Console.WriteLine("no gender precised for " + firstname);
+                    return null;
+                }
+                else
+                {
+                    return body.Replace("[" + greetingLanguague + "]", Greetings.GetGreetingsCustom(greetingsKey, genderKey, firstname, lastname, greetingLanguague));
+                }
             }
             else
             {

@@ -19,7 +19,9 @@ namespace MailSender
 
     class Manager
     {
+        public static string m_folderPath { get; set; }
         public static int m_mailsNumber;
+
         //send the mails from an array experts created by the "createArrayExperts" method in ExcelReader
         public void SendMailFromExcelFile(int templateChoice, string subject, string dynContent, string customBody, ExcelReader Reader)
         {
@@ -168,6 +170,8 @@ namespace MailSender
                 {
                     customBody = customBody + line + "<br>";
                 }
+                FileInfo FileInfo = new FileInfo(customBodyFilePath);
+                m_folderPath = FileInfo.DirectoryName + "\\";
                 return customBody;
             }
             else
