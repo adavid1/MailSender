@@ -1,4 +1,5 @@
-# MailSender
+# MailSender ![icons8-email-sent-64](https://github.com/adavid1/MailSender/assets/36786512/093b00cd-5bbd-4f51-8a7b-4dcffc09fe0a)
+
 
 MailSender is a C# application developed during my internship at Silverlight Research in London. The purpose of this application is to facilitate the mass mailing of experts to schedule appointments with them. The application provides a user-friendly interface to manage email templates, configure mail body content, and send emails in bulk.
 
