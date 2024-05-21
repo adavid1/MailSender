@@ -14,7 +14,7 @@ MailSender is a C# application developed during my internship at Silverlight Res
 
 ### Main Interface
 
-![Main Interface]([path/to/your/main_interface_image.png](https://github.com/adavid1/MailSender/assets/36786512/4f8bb505-a492-470e-aebc-5ff34dabfc7b))
+![mailsender](https://github.com/adavid1/MailSender/assets/36786512/ea6f8edb-917a-4eca-8111-7679e9aaec3d)
 
 - **Paste**: Button to paste the link of the Dropbox file.
 - **Mail Body**: Button to configure the mail body content.
@@ -23,7 +23,7 @@ MailSender is a C# application developed during my internship at Silverlight Res
 
 ### Mail Body Configuration
 
-![Mail Body Configuration]([path/to/your/mail_body_configuration_image.png](https://github.com/adavid1/MailSender/assets/36786512/15dacb1a-8759-47e3-a5e7-89e45ccd5be2))
+![mailsender2](https://github.com/adavid1/MailSender/assets/36786512/a23cd983-5694-495c-88c4-cc42cb8ea53b)
 
 - **Mail's subject**: Text field to enter the subject of the email.
 - **Mail body**: Text area to write or paste the body of the email.
